@@ -1,0 +1,93 @@
+http:
+  port: 8080
+admin:
+  port: 9876
+  hostname: localhost
+apiEndpoints:
+  oauth2-api:
+    host: 'localhost'
+    paths: 
+      - '/oauth*'
+  loyalty-api:
+    host: 'localhost'
+    paths: 
+      - '/admin/cards*'
+      - '/cards*'
+      - '/rewards*'
+  notifications-api:
+    host: 'localhost'
+    paths: 
+      - '/notifications*'
+  vouchers-api:
+    host: 'localhost'
+    paths: 
+      - '/vouchers*'
+  core-api:
+    host: 'localhost'
+    paths: 
+      - '/allergens*'
+      - '/channels*'
+      - '/devices*'
+      - '/locations*'
+      - '/sites*'
+      - '/menus*'
+      - '/menucategories*'
+      - '/menuproducts*'
+      - '/products*'
+      - '/options*'
+      - '/vats*'
+serviceEndpoints:
+  oauth2-service:
+    url: 'http://brs-chup-oauth2.uksouth.cloudapp.azure.com'
+  loyalty-service:
+    url: 'http://brs-chup-loy.uksouth.cloudapp.azure.com/v1'
+  notifications-service:
+    url: 'http://brs-chup-not.uksouth.cloudapp.azure.com/v1'
+  vouchers-service:
+    url: 'http://brs-chup-voucher.uksouth.cloudapp.azure.com/v1'
+  core-service:
+    url: 'http://brs-chup-core.uksouth.cloudapp.azure.com/v1'
+policies:
+  - basic-auth
+  - cors
+  - expression
+  - key-auth
+  - log
+  - proxy
+  - rate-limit
+pipelines:
+  - name: 'oauth2'
+    apiEndpoints:
+      - oauth2-api
+    policies:
+      - proxy:
+        - action:
+            serviceEndpoint: oauth2-service
+  - name: 'loyalty'
+    apiEndpoints:
+      - loyalty-api
+    policies:
+      - proxy:
+        - action:
+            serviceEndpoint: loyalty-service
+  - name: 'notifications'
+    apiEndpoints:
+      - notifications-api
+    policies:
+      - proxy:
+        - action:
+            serviceEndpoint: notifications-service
+  - name: 'vouchers'
+    apiEndpoints:
+      - vouchers-api
+    policies:
+      - proxy:
+        - action:
+            serviceEndpoint: vouchers-service
+  - name: 'core'
+    apiEndpoints:
+      - core-api
+    policies:
+      - proxy:
+        - action:
+            serviceEndpoint: core-service
