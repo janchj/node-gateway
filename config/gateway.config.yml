@@ -1,5 +1,5 @@
 http:
-  port: 8080
+  port: 3001
 admin:
   port: 9876
   hostname: localhost
@@ -67,6 +67,9 @@ pipelines:
     apiEndpoints:
       - loyalty-api
     policies:
+      - log:
+        - action:
+            message: ${req.method} ${req.originalUrl}
       - proxy:
         - action:
             serviceEndpoint: loyalty-service
@@ -74,6 +77,9 @@ pipelines:
     apiEndpoints:
       - notifications-api
     policies:
+      - log:
+        - action:
+            message: ${req.method} ${req.originalUrl}
       - proxy:
         - action:
             serviceEndpoint: notifications-service
@@ -81,6 +87,9 @@ pipelines:
     apiEndpoints:
       - vouchers-api
     policies:
+      - log:
+        - action:
+            message: ${req.method} ${req.originalUrl}
       - proxy:
         - action:
             serviceEndpoint: vouchers-service
@@ -88,6 +97,9 @@ pipelines:
     apiEndpoints:
       - core-api
     policies:
+      - log:
+        - action:
+            message: ${req.method} ${req.originalUrl}
       - proxy:
         - action:
             serviceEndpoint: core-service
